@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-
 class Room
 {
     static int ID = 0;
@@ -15,15 +11,15 @@ class Room
         this.coordY = coordY;
     }
 
-    public void ShowRoom(int x, int y, Player player)
+    public void ShowRoom(Player player)
     {
         if (coordX == player.coordX && coordY == player.coordY)
         {
-            Console.Write("[ > here" + player.coordX + " " + player.coordY + " ]");
+            Console.Write("[ " + player.coordX + " > here " + player.coordY + " ]");
         }
         else
         {
-            Console.Write("[" + x + " " + y + " ]");
+            Console.Write("[ " + coordX + " " + coordY + " ]");
         }
     }
 }
