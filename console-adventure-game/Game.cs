@@ -77,12 +77,12 @@ class Game
 
     private void GenerateRooms(string difficulty)
     {
-        int size = difficultyMap.TryGetValue(difficulty, out int value) ? value : 9;
-
-        for (int i = 0; i < size; i++)
+        int size = difficultyMap.TryGetValue(difficulty, out int value) ? value : 3;
+        int centerIndex = size - 1 / 2;
+        for (int i = -centerIndex; i < centerIndex; i++)
         {
             rooms.Add(new List<Room>());
-            for (int j = 0; j < size; j++)
+            for (int j = -centerIndex; j < centerIndex; j++)
             {
                 rooms[i].Add(new Room(i, j));
             }
@@ -108,15 +108,14 @@ class Game
     public void ShowRooms(Player playerInstance)
     {
         int size = rooms.Count;
+        int centerIndex = size - 1 / 2;
         Console.WriteLine("here is you current position\n");
-
-        for (int i = 0; i < size; i++)
+        for (int i = -centerIndex; i < centerIndex; i++)
         {
-            for (int j = 0; j < size; j++)
+            for (int j = centerIndex; j < centerIndex; j++)
             {
                 rooms[i][j].ShowRoom(playerInstance);
             }
-            Console.WriteLine("");
         }
     }
 
