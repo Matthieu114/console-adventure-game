@@ -39,11 +39,18 @@ class Renderer
 
             if (currentRoom.coordX == player.coordX && currentRoom.coordY == player.coordY)
             {
-                content = "Player";
+                content = "🧍";
             }
-            else if (rooms[row][j].getExplored())
+            else if (currentRoom.getExplored())
             {
-                content = "";
+                if (currentRoom.getHasKey())
+                {
+                    content = "🔑";
+                }
+                else
+                {
+                    content = "";
+                }
             }
             else
             {

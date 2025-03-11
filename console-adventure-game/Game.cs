@@ -92,6 +92,7 @@ class Game
     {
         int size = difficultyMap.TryGetValue(difficulty, out int value) ? value : 3;
         int centerIndex = (size - 1) / 2;
+
         for (int i = 0; i < size; i++)
         {
             rooms.Add(new List<Room>());
@@ -99,6 +100,32 @@ class Game
             {
                 // we substract center index so that 0 becomes the middle coordinates
                 rooms[i].Add(new Room(i - centerIndex, j - centerIndex));
+            }
+        }
+
+        AddKeyToRandomRooms(size);
+    }
+
+    private void AddKeyToRandomRooms(int size)
+    {
+        // Create a new random generator
+        Random rnd = new Random();
+        // maximal amount of keys we want is at most 20% of the number of rooms
+        // if amount is less than 0 just take 1 key
+        int maxKeys = Math.Max(1, (int)Math.Floor(Math.Pow(size, 2) * 0.2));
+        int numberOfKeys = rnd.Next(1, maxKeys + 1);
+
+        HashSet<(int, int)> keyPositions = new HashSet<(int, int)>();
+        while (keyPositions.Count < numberOfKeys)
+        {
+            int c = rnd.Next(0, size);
+            int d = rnd.Next(0, size);
+            // verify if the tuples in the hashset exist already
+            // to avoid adding duplicate keys
+            if (!keyPositions.Contains((c, d)))
+            {
+                rooms[c][d].setHasKey(true);
+                keyPositions.Add((c, d));
             }
         }
     }

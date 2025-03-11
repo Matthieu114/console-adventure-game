@@ -5,8 +5,7 @@ class Player
     public int coordY { get; set; }
     private Game game;
 
-    // verify data structures -- need to learn all data structures
-    // public Dictionary<string, string> inventory;
+    // private List<Item>
 
     public Player(string name, int coordX, int coordY, Game gameInstance)
     {
@@ -27,6 +26,38 @@ class Player
         coordX += x;
         coordY += y;
         game.setCurrentRoom(this);
+
+        if (game.currentRoom.getHasKey())
+        {
+            Console.WriteLine(
+                "\nTHIS ROOM CONTAINS A KEY FOR YOUR ESCAPE. DO YOU WANT TO TAKE IT ?\n 1 - Yes\n 2 - No\n"
+            );
+            bool loop = true;
+            while (loop)
+            {
+                string input = Game.ReadInput();
+                switch (input)
+                {
+                    case "1":
+                    case "yes":
+                        // add to player inventory
+                        game.currentRoom.setHasKey(false);
+                        loop = false;
+                        break;
+                    case "2":
+                    case "no":
+                        // do nothing for now
+                        loop = false;
+                        break;
+                    default:
+                        Console.WriteLine(
+                            "\nYou have entered an incorrect input, would you like to retry to take the key ?\n"
+                        );
+                        break;
+                }
+            }
+        }
+
         game.ShowRooms();
     }
 
