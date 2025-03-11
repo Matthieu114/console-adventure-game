@@ -8,7 +8,12 @@ class Game
 
     public Game()
     {
-        difficultyMap = new Dictionary<string, int> { { "1", 3 }, { "2", 5 }, { "3", 7 } };
+        difficultyMap = new Dictionary<string, int>
+        {
+            { "1", 3 },
+            { "2", 5 },
+            { "3", 7 },
+        };
         rooms = new List<List<Room>>();
         player = new Player("Matthieu", 0, 0, this);
         currentRoom = new Room(0, 0);
@@ -34,7 +39,7 @@ class Game
         while (gameLoop)
         {
             Console.WriteLine(
-                "What do you want to? \n - move \n - inventory \n - quit \n - rules "
+                "\nWhat do you want to? \n 1 - move \n 2 - inventory \n 3 - show position \n 4 - rules \n 5 - quit \n"
             );
 
             string? action = ReadInput();
@@ -42,14 +47,22 @@ class Game
             switch (action)
             {
                 case "move":
+                case "1":
                     player.Move(rooms);
                     break;
+                case "2":
                 case "inventory":
                     // player.getInventory()
                     break;
+                case "3":
+                case "show position":
+                    ShowRooms();
+                    break;
+                case "4":
                 case "rules":
                     ShowRules();
                     break;
+                case "5":
                 case "quit":
                     gameLoop = false;
                     break;
@@ -78,13 +91,14 @@ class Game
     private void GenerateRooms(string difficulty)
     {
         int size = difficultyMap.TryGetValue(difficulty, out int value) ? value : 3;
-        int centerIndex = size - 1 / 2;
-        for (int i = -centerIndex; i < centerIndex; i++)
+        int centerIndex = (size - 1) / 2;
+        for (int i = 0; i < size; i++)
         {
             rooms.Add(new List<Room>());
-            for (int j = -centerIndex; j < centerIndex; j++)
+            for (int j = 0; j < size; j++)
             {
-                rooms[i].Add(new Room(i, j));
+                // we substract center index so that 0 becomes the middle coordinates
+                rooms[i].Add(new Room(i - centerIndex, j - centerIndex));
             }
         }
     }
@@ -100,23 +114,15 @@ class Game
                 if (rooms[i][j].coordX == player.coordX && rooms[i][j].coordY == player.coordY)
                 {
                     currentRoom = rooms[i][j];
+                    currentRoom.setExplored(true);
                 }
             }
         }
     }
 
-    public void ShowRooms(Player playerInstance)
+    public void ShowRooms()
     {
-        int size = rooms.Count;
-        int centerIndex = size - 1 / 2;
-        Console.WriteLine("here is you current position\n");
-        for (int i = -centerIndex; i < centerIndex; i++)
-        {
-            for (int j = centerIndex; j < centerIndex; j++)
-            {
-                rooms[i][j].ShowRoom(playerInstance);
-            }
-        }
+        Renderer.ShowRooms(rooms, player);
     }
 
     public static string ReadInput()

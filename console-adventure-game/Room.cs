@@ -1,8 +1,11 @@
 class Room
 {
     static int ID = 0;
-    public int coordX { get; }
-    public int coordY { get; }
+    public int coordX;
+    public int coordY;
+    private bool hasKey { get; set; }
+
+    private bool explored { get; set; } = false;
 
     public Room(int coordX, int coordY)
     {
@@ -11,15 +14,23 @@ class Room
         this.coordY = coordY;
     }
 
-    public void ShowRoom(Player player)
+    public bool getExplored()
     {
-        if (coordX == player.coordX && coordY == player.coordY)
+        if (coordX == 0 && coordY == 0)
         {
-            Console.Write("[ " + player.coordX + " > here " + player.coordY + " ]");
+            return true;
         }
-        else
-        {
-            Console.Write("[ " + coordX + " " + coordY + " ]");
-        }
+
+        return explored;
     }
+
+    public void setExplored(bool explored)
+    {
+        this.explored = explored;
+    }
+
+    // concept of fog of war
+    // see which room has not been explored
+    // set randoms keys to retrieve in each room
+    // set a final door to unlock with all keys
 }

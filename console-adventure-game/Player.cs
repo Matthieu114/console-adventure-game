@@ -17,23 +17,23 @@ class Player
         // this.inventory = new Dictionary<string, string>();
     }
 
-    private void SetPlayerCoordinates(int x, int y)
+    private void UpdatePlayerCoordinates(int x, int y)
     {
         if (!CanMoveInDirection(x, y))
         {
-            Console.WriteLine("Can not move player in this direction no room exists\n");
+            Console.WriteLine("\nCan not move player in this direction no room exists\n");
             return;
         }
         coordX += x;
         coordY += y;
         game.setCurrentRoom(this);
-        game.ShowRooms(this);
+        game.ShowRooms();
     }
 
     public void Move(List<List<Room>> rooms)
     {
         bool loop = true;
-        game.ShowRooms(this);
+        game.ShowRooms();
 
         while (loop)
         {
@@ -45,19 +45,19 @@ class Player
             {
                 case "1":
                 case "left":
-                    SetPlayerCoordinates(0, -1);
+                    UpdatePlayerCoordinates(0, -1);
                     break;
                 case "2":
                 case "right":
-                    SetPlayerCoordinates(0, 1);
+                    UpdatePlayerCoordinates(0, 1);
                     break;
                 case "up":
                 case "3":
-                    SetPlayerCoordinates(-1, 0);
+                    UpdatePlayerCoordinates(-1, 0);
                     break;
                 case "4":
                 case "down":
-                    SetPlayerCoordinates(1, 0);
+                    UpdatePlayerCoordinates(1, 0);
                     break;
                 case "5":
                 case "stay":
@@ -73,12 +73,15 @@ class Player
     private bool CanMoveInDirection(int x, int y)
     {
         Room currentRoom = game.currentRoom;
-        int maxRoomsSize = game.rooms.Count;
+        int roomSize = game.rooms.Count;
+        int centerIndex = (roomSize - 1) / 2;
+        int maxCoordinates = roomSize - centerIndex;
+
         if (
-            currentRoom.coordX + x < 0
-            || currentRoom.coordY + y < 0
-            || currentRoom.coordX + x > maxRoomsSize - 1
-            || currentRoom.coordY + y > maxRoomsSize - 1
+            currentRoom.coordX + x < -centerIndex
+            || currentRoom.coordY + y < -centerIndex
+            || currentRoom.coordX + x > maxCoordinates - 1
+            || currentRoom.coordY + y > maxCoordinates - 1
         )
         {
             return false;
