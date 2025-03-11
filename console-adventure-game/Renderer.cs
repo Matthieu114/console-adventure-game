@@ -27,6 +27,9 @@ class Renderer
                 PrintBottomBorder(size);
             }
         }
+
+        Console.WriteLine();
+        Console.WriteLine("Keys in inventory: " + player.getNumberOfKeys() + "\n");
     }
 
     private static void PrintRoomRow(List<List<Room>> rooms, Player player, int row)

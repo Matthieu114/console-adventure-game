@@ -5,15 +5,15 @@ class Player
     public int coordY { get; set; }
     private Game game;
 
-    // private List<Item>
+    private List<Item> inventory;
 
     public Player(string name, int coordX, int coordY, Game gameInstance)
     {
         this.name = name;
         this.coordX = coordX;
         this.coordY = coordY;
-        this.game = gameInstance;
-        // this.inventory = new Dictionary<string, string>();
+        game = gameInstance;
+        inventory = new List<Item>();
     }
 
     private void UpdatePlayerCoordinates(int x, int y)
@@ -33,6 +33,7 @@ class Player
                 "\nTHIS ROOM CONTAINS A KEY FOR YOUR ESCAPE. DO YOU WANT TO TAKE IT ?\n 1 - Yes\n 2 - No\n"
             );
             bool loop = true;
+
             while (loop)
             {
                 string input = Game.ReadInput();
@@ -40,13 +41,12 @@ class Player
                 {
                     case "1":
                     case "yes":
-                        // add to player inventory
+                        inventory.Add(new Item("Key", ItemType.Key));
                         game.currentRoom.setHasKey(false);
                         loop = false;
                         break;
                     case "2":
                     case "no":
-                        // do nothing for now
                         loop = false;
                         break;
                     default:
@@ -119,5 +119,10 @@ class Player
         }
 
         return true;
+    }
+
+    public int getNumberOfKeys()
+    {
+        return inventory.Where(item => item.type == ItemType.Key).Count();
     }
 }
